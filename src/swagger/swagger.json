@@ -1,0 +1,64 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Real Estate Listing API",
+      "description": "API for managing properties and real estate agents."
+    },
+    "host": "your-app-name.onrender.com",
+    "basePath": "/",
+    "schemes": ["https"],
+    "paths": {
+      "/properties": {
+        "get": {
+          "tags": ["Properties"],
+          "responses": { "200": { "description": "List of all properties" } }
+        },
+        "post": {
+          "tags": ["Properties"],
+          "parameters": [{
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/Property" }
+          }],
+          "responses": { "201": { "description": "Property created" }, "400": { "description": "Validation error" } }
+        }
+      },
+      "/properties/{id}": {
+        "get": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Property details" } } },
+        "put": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Property" } }], "responses": { "200": { "description": "Property updated" } } },
+        "delete": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Property deleted" } } }
+      },
+      "/users": {
+        "get": { "tags": ["Users"], "responses": { "200": { "description": "List of all users" } } },
+        "post": { "tags": ["Users"], "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], "responses": { "201": { "description": "User created" } } }
+      },
+      "/users/{id}": {
+        "get": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "User details" } } },
+        "put": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], "responses": { "200": { "description": "User updated" } } },
+        "delete": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "User deleted" } } }
+      }
+    },
+    "definitions": {
+      "Property": {
+        "type": "object",
+        "required": ["title", "price", "location", "agentId"],
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number" },
+          "location": { "type": "string" },
+          "agentId": { "type": "string", "description": "MongoDB ObjectId of the User" }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" }
+        }
+      }
+    }
+  }

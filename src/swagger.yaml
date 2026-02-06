@@ -1,0 +1,208 @@
+openapi: 3.0.0
+info:
+  title: Real Estate API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+tags:
+  - name: Users
+    description: Operations related to users
+  - name: Properties
+    description: Operations related to properties
+
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - Users
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+        - Users
+      summary: Update user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated
+    delete:
+      tags:
+        - Users
+      summary: Delete user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User deleted
+
+  /properties:
+    get:
+      tags:
+        - Properties
+      summary: Get all properties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+    post:
+      tags:
+        - Properties
+      summary: Create a new property
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property'
+      responses:
+        '201':
+          description: Property created
+
+  /properties/{id}:
+    get:
+      tags:
+        - Properties
+      summary: Get property by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+    put:
+      tags:
+        - Properties
+      summary: Update property by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property'
+      responses:
+        '200':
+          description: Property updated
+    delete:
+      tags:
+        - Properties
+      summary: Delete property by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Property deleted
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - email
+        - phone
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+
+    Property:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - location
+        - agentId
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        location:
+          type: string
+        agentId:
+          type: string
