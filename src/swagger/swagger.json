@@ -5,9 +5,11 @@
       "title": "Real Estate Listing API",
       "description": "API for managing properties and real estate agents."
     },
-    "host": "your-app-name.onrender.com",
+    "host": "cse341-team2-real-estate-api-final.onrender.com",
     "basePath": "/",
     "schemes": ["https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
     "paths": {
       "/properties": {
         "get": {
