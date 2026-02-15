@@ -50,7 +50,7 @@
       "get": { "tags": ["Users"], "responses": { "200": { "description": "List of all users" } } },
       "post": { 
         "tags": ["Users"], 
-        "security": [{ "github_auth": [] }],
+        "security": [{ "github_auth": [] }], 
         "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], 
         "responses": { "201": { "description": "User created" } } 
       }
@@ -62,14 +62,50 @@
     },
     "/agents": {
       "get": { "tags": ["Agents"], "responses": { "200": { "description": "List of agents" } } },
-      "post": { "tags": ["Agents"], "security": [{ "github_auth": [] }], "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Agent" } }], "responses": { "201": { "description": "Agent created" } } }
+      "post": { 
+        "tags": ["Agents"], 
+        "security": [{ "github_auth": [] }], 
+        "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Agent" } }], 
+        "responses": { "201": { "description": "Agent created" } } 
+      }
+    },
+    "/agents/{id}": {
+      "get": { "tags": ["Agents"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Agent details" } } },
+      "put": { 
+        "tags": ["Agents"], 
+        "security": [{ "github_auth": [] }], 
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Agent" } }], 
+        "responses": { "200": { "description": "Agent updated" } } 
+      },
+      "delete": { 
+        "tags": ["Agents"], 
+        "security": [{ "github_auth": [] }], 
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], 
+        "responses": { "200": { "description": "Agent deleted" } } 
+      }
     },
     "/inquiries": {
       "get": { "tags": ["Inquiries"], "responses": { "200": { "description": "List of inquiries" } } },
-      "post": { "tags": ["Inquiries"], "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Inquiry" } }], "responses": { "201": { "description": "Inquiry created" } } }
+      "post": { 
+        "tags": ["Inquiries"], 
+        "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Inquiry" } }], 
+        "responses": { "201": { "description": "Inquiry created" } } 
+      }
     },
     "/inquiries/{id}": {
-      "delete": { "tags": ["Inquiries"], "security": [{ "github_auth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Inquiry deleted" } } }
+      "get": { "tags": ["Inquiries"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Inquiry details" } } },
+      "put": { 
+        "tags": ["Inquiries"], 
+        "security": [{ "github_auth": [] }], 
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Inquiry" } }], 
+        "responses": { "200": { "description": "Inquiry updated" } } 
+      },
+      "delete": { 
+        "tags": ["Inquiries"], 
+        "security": [{ "github_auth": [] }], 
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], 
+        "responses": { "200": { "description": "Inquiry deleted" } } 
+      }
     }
   },
   "definitions": {
