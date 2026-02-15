@@ -1,6 +1,6 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { isAuthenticated } from '../app.js'; // Import the OAuth check
+import { isAuthenticated } from '../middleware/authenticate.js';// Import the OAuth check
 import {
   getUsers,
   getUserById,

@@ -60,12 +60,6 @@ app.get('/logout', (req, res, next) => {
   });
 });
 
-// 5. Auth Middleware (To be used in your Route files)
-export const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ message: "Unauthorized. Please login via /login" });
-};
-
 // --- Your Existing Routes ---
 app.use('/users', usersRoutes);
 app.use('/properties', propertiesRoutes);

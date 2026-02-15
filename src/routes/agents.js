@@ -1,6 +1,6 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { isAuthenticated } from '../app.js';
+import { isAuthenticated } from '../middleware/authenticate.js';
 import {
   getAgents,
   getAgentById,
