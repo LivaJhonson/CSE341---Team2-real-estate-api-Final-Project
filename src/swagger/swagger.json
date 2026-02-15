@@ -1,66 +1,115 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "Real Estate Listing API",
-      "description": "API for managing properties and real estate agents."
-    },
-    "host": "cse341-team2-real-estate-api-final.onrender.com",
-    "basePath": "/",
-    "schemes": ["https"],
-    "consumes": ["application/json"],
-    "produces": ["application/json"],
-    "paths": {
-      "/properties": {
-        "get": {
-          "tags": ["Properties"],
-          "responses": { "200": { "description": "List of all properties" } }
-        },
-        "post": {
-          "tags": ["Properties"],
-          "parameters": [{
-            "name": "body",
-            "in": "body",
-            "schema": { "$ref": "#/definitions/Property" }
-          }],
-          "responses": { "201": { "description": "Property created" }, "400": { "description": "Validation error" } }
-        }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Real Estate Listing API",
+    "description": "API for managing properties, agents, users, and inquiries. Secured with GitHub OAuth."
+  },
+  "host": "cse341-team2-real-estate-api-final.onrender.com",
+  "basePath": "/",
+  "schemes": ["https", "http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "github_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://github.com/login/oauth/authorize",
+      "flow": "implicit",
+      "description": "Login with GitHub to access protected routes"
+    }
+  },
+  "paths": {
+    "/properties": {
+      "get": {
+        "tags": ["Properties"],
+        "responses": { "200": { "description": "List of all properties" } }
       },
-      "/properties/{id}": {
-        "get": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Property details" } } },
-        "put": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Property" } }], "responses": { "200": { "description": "Property updated" } } },
-        "delete": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Property deleted" } } }
-      },
-      "/users": {
-        "get": { "tags": ["Users"], "responses": { "200": { "description": "List of all users" } } },
-        "post": { "tags": ["Users"], "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], "responses": { "201": { "description": "User created" } } }
-      },
-      "/users/{id}": {
-        "get": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "User details" } } },
-        "put": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], "responses": { "200": { "description": "User updated" } } },
-        "delete": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "User deleted" } } }
+      "post": {
+        "tags": ["Properties"],
+        "security": [{ "github_auth": [] }],
+        "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Property" } }],
+        "responses": { "201": { "description": "Property created" }, "401": { "description": "Unauthorized" } }
       }
     },
-    "definitions": {
-      "Property": {
-        "type": "object",
-        "required": ["title", "price", "location", "agentId"],
-        "properties": {
-          "title": { "type": "string" },
-          "description": { "type": "string" },
-          "price": { "type": "number" },
-          "location": { "type": "string" },
-          "agentId": { "type": "string", "description": "MongoDB ObjectId of the User" }
-        }
+    "/properties/{id}": {
+      "get": { "tags": ["Properties"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Property details" } } },
+      "put": { 
+        "tags": ["Properties"], 
+        "security": [{ "github_auth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Property" } }], 
+        "responses": { "200": { "description": "Property updated" } } 
       },
-      "User": {
-        "type": "object",
-        "required": ["name", "email"],
-        "properties": {
-          "name": { "type": "string" },
-          "email": { "type": "string" },
-          "phone": { "type": "string" }
-        }
+      "delete": { 
+        "tags": ["Properties"], 
+        "security": [{ "github_auth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], 
+        "responses": { "200": { "description": "Property deleted" } } 
+      }
+    },
+    "/users": {
+      "get": { "tags": ["Users"], "responses": { "200": { "description": "List of all users" } } },
+      "post": { 
+        "tags": ["Users"], 
+        "security": [{ "github_auth": [] }],
+        "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], 
+        "responses": { "201": { "description": "User created" } } 
+      }
+    },
+    "/users/{id}": {
+      "get": { "tags": ["Users"], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "User details" } } },
+      "put": { "tags": ["Users"], "security": [{ "github_auth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }, { "name": "body", "in": "body", "schema": { "$ref": "#/definitions/User" } }], "responses": { "200": { "description": "User updated" } } },
+      "delete": { "tags": ["Users"], "security": [{ "github_auth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "User deleted" } } }
+    },
+    "/agents": {
+      "get": { "tags": ["Agents"], "responses": { "200": { "description": "List of agents" } } },
+      "post": { "tags": ["Agents"], "security": [{ "github_auth": [] }], "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Agent" } }], "responses": { "201": { "description": "Agent created" } } }
+    },
+    "/inquiries": {
+      "get": { "tags": ["Inquiries"], "responses": { "200": { "description": "List of inquiries" } } },
+      "post": { "tags": ["Inquiries"], "parameters": [{ "name": "body", "in": "body", "schema": { "$ref": "#/definitions/Inquiry" } }], "responses": { "201": { "description": "Inquiry created" } } }
+    },
+    "/inquiries/{id}": {
+      "delete": { "tags": ["Inquiries"], "security": [{ "github_auth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }], "responses": { "200": { "description": "Inquiry deleted" } } }
+    }
+  },
+  "definitions": {
+    "Property": {
+      "type": "object",
+      "required": ["title", "price", "location", "agentId"],
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "location": { "type": "string" },
+        "agentId": { "type": "string" }
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": ["name", "email"],
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" }
+      }
+    },
+    "Agent": {
+      "type": "object",
+      "required": ["name", "licenseNumber"],
+      "properties": {
+        "name": { "type": "string" },
+        "licenseNumber": { "type": "string" },
+        "email": { "type": "string" }
+      }
+    },
+    "Inquiry": {
+      "type": "object",
+      "required": ["propertyId", "userId", "message"],
+      "properties": {
+        "propertyId": { "type": "string" },
+        "userId": { "type": "string" },
+        "message": { "type": "string" }
       }
     }
   }
+}
