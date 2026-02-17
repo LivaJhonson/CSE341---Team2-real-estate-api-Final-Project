@@ -21,7 +21,7 @@ const propertySchema = new mongoose.Schema({
   },
   agentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Agent',
     required: true
   },
   createdAt: {
