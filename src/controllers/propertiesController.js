@@ -34,15 +34,11 @@ export const getPropertyById = async (req, res) => {
 
 // POST create property
 export const createProperty = async (req, res) => {
-  const { title, description, price, location, agentId } = req.body;
-
-  if (!title || !price || !location || !agentId)
-    return res
-      .status(400)
-      .json({ message: 'Title, price, location, and agentId are required' });
+  // Destructure the new fields here
+  const { title, description, price, location, agentId, propertyType, status, sqft } = req.body;
 
   try {
-    const property = new Property({ title, description, price, location, agentId });
+    const property = new Property({ title, description, price, location, agentId, propertyType, status, sqft });
     await property.save();
     res.status(201).json(property);
   } catch (error) {
@@ -54,17 +50,10 @@ export const createProperty = async (req, res) => {
 // PUT update property
 export const updateProperty = async (req, res) => {
   const { id } = req.params;
-  const { title, description, price, location, agentId } = req.body;
-
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(400).json({ message: 'Invalid property ID' });
-
+  
   try {
-    const property = await Property.findByIdAndUpdate(
-      id,
-      { title, description, price, location, agentId },
-      { new: true, runValidators: true }
-    );
+    // Using req.body directly is cleaner if validation has already passed
+    const property = await Property.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
 
     if (!property) return res.status(404).json({ message: 'Property not found' });
     res.json(property);

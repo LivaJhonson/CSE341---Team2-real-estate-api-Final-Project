@@ -12,6 +12,9 @@ export const rules = {
     body('title').trim().notEmpty().withMessage('Title is required'),
     body('price').isNumeric().withMessage('Price must be a number'),
     body('location').notEmpty().withMessage('Location is required'),
+    body('propertyType').notEmpty().withMessage('Property type is required'),
+    body('sqft').isNumeric().withMessage('Square footage must be a number'),
+    body('status').optional().isIn(['Available', 'Sold', 'Pending']),
     body('agentId').isMongoId().withMessage('Invalid Agent ID')
   ],
   user: [
